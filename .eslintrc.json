@@ -7,7 +7,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "project": ["path/to/your/tsconfig/file"]
     },
     "ecmaVersion": "latest",
     "sourceType": "module"
