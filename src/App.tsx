@@ -1,6 +1,7 @@
+import Search from './components/Search';
+
 const App = () => {
-  const num = 1;
-  return <div>boilerplate</div>;
+  return <Search />;
 };
 
 export default App;
