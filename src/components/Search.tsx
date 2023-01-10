@@ -16,7 +16,7 @@ const Search = () => {
   const [cache, setCache] = useState<Cache[]>([]);
   const [searchTerm, setSearchTerm] = useState<Recommended[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [select, setSelect] = useState<number>();
+  const [select, setSelect] = useState<number>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
