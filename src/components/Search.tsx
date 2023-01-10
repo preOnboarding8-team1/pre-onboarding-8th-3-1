@@ -3,20 +3,18 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import styled from 'styled-components';
 import Recommend from './Recommend';
 import { getRecommended } from '../api/search';
+import { Recommended } from '../types';
 
 const Search = () => {
-  interface Recommend {
-    sickCd: string;
-    sickNm: string;
-  }
   interface Cache {
     query: string;
-    recommended: Recommend[];
+    recommended: Recommended[];
   }
   type Callback = (...args: string[]) => void;
+
   const [query, setQuery] = useState<string>('');
   const [cache, setCache] = useState<Cache[]>([]);
-  const [searchTerm, setSearchTerm] = useState<Recommend[]>([]);
+  const [searchTerm, setSearchTerm] = useState<Recommended[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [select, setSelect] = useState<number>();
   const [isFocus, setIsFocus] = useState<boolean>(false);
@@ -29,12 +27,12 @@ const Search = () => {
       timer = setTimeout(() => callback(...args), delay);
     };
   };
-  const printValue = debounceFunction((value: string) => {
+  const debounceOnChange = debounceFunction((value: string) => {
     setQuery(value);
     search(value);
   });
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    printValue(e.target.value);
+    debounceOnChange(e.target.value);
   };
 
   const getSearchTermList = async (q: string = query) => {

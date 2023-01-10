@@ -1,8 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import Loading from './Loading';
+import { Recommended } from '../types';
 
-const Recommend = ({ searchTerm, isLoading, select, query }) => {
+interface Props {
+  searchTerm: Recommended[];
+  isLoading: boolean;
+  select: number;
+  query: string;
+}
+
+const Recommend = ({ searchTerm, isLoading, select, query }: Props) => {
   return (
     <RecommendComponents>
       {isLoading ? (
