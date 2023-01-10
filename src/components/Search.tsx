@@ -110,6 +110,7 @@ const SearchComponent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 `;
 const Form = styled.form`
   height: 40px;
