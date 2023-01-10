@@ -20,7 +20,7 @@ const Search = () => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const debounceFunction = (callback: Callback, delay: number = 500) => {
+  const debounceFunction = (callback: Callback, delay = 500) => {
     let timer: ReturnType<typeof setTimeout>;
     return (...args) => {
       clearTimeout(timer);

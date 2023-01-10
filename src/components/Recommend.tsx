@@ -16,10 +16,10 @@ const Recommend = ({ searchTerm, isLoading, select, query }: Props) => {
       {isLoading ? (
         <Loading />
       ) : searchTerm && searchTerm.length ? (
-        searchTerm.map((recommended, idx) => {
+        searchTerm.map((recommended, recommendedIdx) => {
           const rec = recommended.sickNm.split(query);
           return (
-            <Text key={recommended.sickCd} className={idx === select ? 'select' : ''}>
+            <Text key={recommended.sickCd} className={recommendedIdx === select ? 'select' : ''}>
               {rec.map((str, idx) =>
                 idx > 0 ? (
                   <div key={str}>
