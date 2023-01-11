@@ -75,7 +75,8 @@
       {
         "namedComponents": "arrow-function"
       }
-    ]
+    ],
+    "@typescript-eslint/no-non-null-assertion": "off"
   },
   "settings": {
     "import/resolver": {

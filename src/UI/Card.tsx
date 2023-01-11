@@ -1,11 +1,8 @@
-import { ReactNode } from 'react';
+
 import styled from 'styled-components';
 
-type MyComponentProps = {
-  children: ReactNode;
-};
 
-const Card = ({ children }: MyComponentProps) => {
+const Card = ({ children}) => {
   return (
     <CardWrapper>
       <div>{children}</div>

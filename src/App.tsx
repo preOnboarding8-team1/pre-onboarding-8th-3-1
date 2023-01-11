@@ -1,12 +1,16 @@
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import RecommendItemBox from './components/Recommend/RecommendItemBox';
 import SearchBar from './components/Search/SearchBar';
+import FocusContext from './store/focus-context';
 
 const App = () => {
-  return (
+  const ctx = useContext(FocusContext);
+
+  return ( 
     <AppWrapper>
       <SearchBar />
-      <RecommendItemBox />
+      {ctx.isFocused && <RecommendItemBox />}
     </AppWrapper>
   );
 };
