@@ -10,8 +10,16 @@ const client = axios.create(axiosConfig);
 
 const FetchInputHandler = async (query: string) => {
   // @TODO 검색한 데이터를 저장하는 store 구현
+  const cachedData = await localStorage.getItem(query)
+  if(cachedData){
+    console.log("캐시된 데이터 호출")
+    return JSON.parse(cachedData)
+  }
   const response = await client.get(`?q=${query}`);
-  return response;
+  const dataParser = JSON.stringify(response.data)
+  await localStorage.setItem(query, dataParser)
+  console.log("API 호출")
+  return response.data;
 };
 
 export default FetchInputHandler;
