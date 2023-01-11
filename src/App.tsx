@@ -1,6 +1,6 @@
 const App = () => {
   const num = 1;
-  return <div>boilerplate</div>;
+  return <div>boile</div>;
 };
 
 export default App;
