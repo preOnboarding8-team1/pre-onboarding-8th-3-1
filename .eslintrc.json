@@ -9,16 +9,14 @@
     "ecmaFeatures": {
       "jsx": true
     },
+    "project": ["./tsconfig.json"],
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": ["./tsconfig.json"]
+    "sourceType": "module"
   },
   "extends": [
     "airbnb",
     "airbnb-typescript",
     "plugin:import/recommended",
-    "plugin:import/typescript",
-    "plugin:react/jsx-runtime",
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
@@ -55,6 +53,7 @@
     ],
     "no-unused-vars": ["off"], // 사용하지 않는 변수 선언 가능
     "no-use-before-define": "off", // 변수가 선언문보다 더 위에 있어도 사용 가능
+    "@typescript-eslint/no-use-before-define": "off",
     "prefer-arrow-callback": "error", // 콜백 함수는 반드시 화살표 함수로 작성
     "prefer-template": "off", // 문자열을 문자열 연결 연산자(+)로 연결 가능
     "require-await": "error", // 내부에 await 표현식 없이 async를 사용할 수 없음,
