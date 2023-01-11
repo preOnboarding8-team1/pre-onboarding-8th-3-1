@@ -1,6 +1,15 @@
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Main from './page/Main';
+
 const App = () => {
-  const num = 1;
-  return <div>boilerplate</div>;
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" component={Main} />
+      </Switch>
+    </Router>
+  );
 };
 
 export default App;
