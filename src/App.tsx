@@ -1,39 +1,60 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
+import React, { useState } from 'react';
+import Search from './Search';
 
 const App = () => {
   const [focus, setFocus] = useState<boolean>(false);
+  const [disease, setDisease] = useState('');
 
-  const handleOnFocus = () => {
+  const handleOnFocus = (): void => {
     const inputBox = document.querySelector<HTMLElement>('.inputBox');
+    const buttonClear = document.querySelector<HTMLElement>('.buttonClear');
+
     inputBox.style.outline = '#1976D2 solid 1px';
+    buttonClear.style.display = 'block';
     setFocus(true);
   };
 
-  const handleOutFocus = () => {
+  const handleOutFocus = (event: React.FocusEvent<HTMLInputElement>): void => {
     const inputBox = document.querySelector<HTMLElement>('.inputBox');
+    const buttonClear = document.querySelector<HTMLElement>('.buttonClear');
+
+    if (!event.relatedTarget) buttonClear.style.display = 'none';
     inputBox.style.outline = 'none';
     setFocus(false);
   };
 
+  const handleInputText = (): void => {
+    const inputDisease = document.querySelector<HTMLInputElement>('.inputDisease');
+
+    inputDisease.value = '';
+    inputDisease.focus();
+  };
+
   return (
-    <MainContainer>
-      <MainTitle>
-        국내 모든 임상시험 검색하고
-        <br />
-        온라인으로 참여하기
-      </MainTitle>
-      <InputContainer className="inputBox">
-        <InputDisease
-          type="search"
-          placeholder="질환명을 입력해 주세요."
-          onFocus={handleOnFocus}
-          onBlur={handleOutFocus}
-        />
-        {focus && <InputClearButton>X</InputClearButton>}
-        <InputSearchButton />
-      </InputContainer>
-    </MainContainer>
+    <>
+      <MainContainer>
+        <MainTitle>
+          국내 모든 임상시험 검색하고
+          <br />
+          온라인으로 참여하기
+        </MainTitle>
+        <InputContainer className="inputBox">
+          <InputDisease
+            className="inputDisease"
+            type="search"
+            placeholder="질환명을 입력해 주세요."
+            onFocus={handleOnFocus}
+            onBlur={handleOutFocus}
+          />
+          <InputClearButton className="buttonClear" onClick={handleInputText}>
+            X
+          </InputClearButton>
+          <InputSearchButton />
+        </InputContainer>
+      </MainContainer>
+      {focus && <Search setDisease={setDisease} disease={disease} />}
+    </>
   );
 };
 
@@ -57,7 +78,7 @@ const MainTitle = styled.h1`
 
 const InputContainer = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
   width: 480px;
   height: 70px;
@@ -66,27 +87,34 @@ const InputContainer = styled.div`
 `;
 
 const InputDisease = styled.input`
-  width: 369px;
-  height: 20px;
-  margin: 20px 10px 20px 24px;
-  padding-left: 24px;
+  width: 370px;
+  height: 25px;
+  padding-left: 20px;
   border: none;
   border-radius: 10px;
   font-size: 100%;
+  font-weight: 500;
   caret-color: #1976d2;
-  color: black;
-  background: url('/asset/input_search.svg') no-repeat center;
-  background-size: 20px 20px;
-  background-position: 5px center;
 
   :focus {
     background-image: none;
     outline: none;
   }
 
+  :focus::-webkit-input-placeholder,
+  :focus::-webkit-input-placeholder {
+    color: transparent;
+    background-image: none;
+  }
+
   ::placeholder {
+    padding-left: 25px;
+    background: url('/asset/input_search.svg') no-repeat center;
+    background-size: 20px 20px;
+    background-position: 0px bottom;
     font-size: 100%;
-    padding-left: 15px;
+    font-weight: 500;
+    color: grey;
   }
 
   ::-webkit-search-cancel-button {
@@ -99,9 +127,9 @@ const InputDisease = styled.input`
 `;
 
 const InputClearButton = styled.button`
+  display: none;
   width: 20px;
   height: 20px;
-  margin-left: 2px;
   border: none;
   border-radius: 50%;
   background-color: #b1b6b9;
