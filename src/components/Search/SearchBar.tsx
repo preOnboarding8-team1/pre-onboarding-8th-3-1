@@ -7,8 +7,10 @@ import FocusContext from '../../store/focus-context';
 const SearchBar = () => {
   // @TODO onFocus, onBlur 처리할 Context 만들기
   // focus, blur에 따라 context를 만들어 RecommendItemBox를 보일지 말지 결정한다.
-
   const ctx = useContext(FocusContext);
+  // @TODO 입력을 받는 onChangeHanlder 함수 만들기
+  // 검색값(State)이 변할 때마다 debounce 방식으로 API를 호출하는 effect hook 만들기
+
   return (
     <SearchBarWrap>
       <Card>
