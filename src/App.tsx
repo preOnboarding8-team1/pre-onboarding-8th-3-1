@@ -6,6 +6,7 @@ import FocusContext from './store/focus-context';
 
 const App = () => {
   const ctx = useContext(FocusContext);
+  localStorage.clear();
 
   return ( 
     <AppWrapper>

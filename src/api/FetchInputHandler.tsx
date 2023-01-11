@@ -18,7 +18,7 @@ const FetchInputHandler = async (query: string) => {
   const response = await client.get(`?q=${query}`);
   const dataParser = JSON.stringify(response.data)
   await localStorage.setItem(query, dataParser)
-  console.log("API 호출")
+  console.info("calling api")
   return response.data;
 };
 

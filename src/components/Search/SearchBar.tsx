@@ -11,15 +11,20 @@ const SearchBar = () => {
   const ctx = useContext(FocusContext);
   // @TODO 입력을 받는 onChangeHanlder 함수 만들기
   // 검색값(State)이 변할 때마다 debounce 방식으로 API를 호출하는 effect hook 만들기
-
-  // @TODO 캐싱을 테스트할 임시 useEffect , Handler
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    FetchInputHandler(input).then((res) => {console.log(res)});
+    const debouncer = setTimeout(()=>{
+      if(input){
+        FetchInputHandler(input).then((res) => {console.log(res)});
+      }
+    },500)
+    return () => {
+      clearTimeout(debouncer)
+    }
   }, [input]);
 
-  const testing = (e) => {
+  const onChangeHandler = (e) => {
     setInput(e.target.value);
   };
 
@@ -31,7 +36,7 @@ const SearchBar = () => {
           placeholder="질환명을 검색해주세요"
           onFocus={ctx.onFocus}
           onBlur={ctx.onBlur}
-          onChange={testing}
+          onChange={onChangeHandler}
           value={input}
         />
         <ImageWrap src={searchIcon} alt="검색" />
