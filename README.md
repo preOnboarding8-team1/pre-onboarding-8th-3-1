@@ -1,4 +1,4 @@
-# 원티드 프리온보딩 8th - 2주차 과제
+# 원티드 프리온보딩 8th - 3주차 과제
 
 [![React Version](https://img.shields.io/badge/React-v18.2.0-blue)](https://ko.reactjs.org/)
 [![Package Manager Version](https://img.shields.io/badge/npm-v8.12.1-yellow)](https://www.npmjs.com/)
@@ -7,7 +7,7 @@
 
 ### 🗓 수행 기간
 
-> 2023.01.03 - 2022.01.06
+> 2023.01.09 - 2022.01.13
 
 ### 📢 배포 링크
 
