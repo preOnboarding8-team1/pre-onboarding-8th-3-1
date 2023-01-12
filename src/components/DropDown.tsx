@@ -6,11 +6,12 @@ import SearchItem from './SearchItem';
 
 type DropDownProps = {
   searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   results: Result[];
+  selected: number;
+  handleDropDownClick: (clickedOption: string) => void;
 };
 
-const DropDown = ({ searchQuery, setSearchQuery, results }: DropDownProps) => {
+const DropDown = ({ searchQuery, results, selected, handleDropDownClick }: DropDownProps) => {
   return (
     <Wrapper>
       {searchQuery ? (
@@ -27,8 +28,15 @@ const DropDown = ({ searchQuery, setSearchQuery, results }: DropDownProps) => {
               <SectionTitle>추천 검색어</SectionTitle>
 
               <ResultList>
-                {results?.map((result) => (
-                  <SearchItem key={result.sickCd} item={result} query={searchQuery} />
+                {results?.map((result, idx) => (
+                  <SearchItem
+                    key={result.sickCd}
+                    item={result}
+                    query={searchQuery}
+                    handleDropDownClick={handleDropDownClick}
+                    idx={idx}
+                    selected={selected}
+                  />
                 ))}
               </ResultList>
             </>

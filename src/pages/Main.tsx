@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import DropDown from '../components/DropDown';
 import SearchBar from '../components/SearchBar';
@@ -10,10 +10,29 @@ const Main = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<Result[]>();
 
+  const [selected, setSelected] = useState(-1);
+
+  const handleDropDownClick = (clickedOption) => {
+    setSearchQuery(clickedOption);
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown' && results.length - 1 > selected) {
+      setSelected(selected + 1);
+    }
+    if (e.key === 'ArrowUp' && selected >= 0) {
+      setSelected(selected - 1);
+    }
+    if (e.key === 'Enter' && selected >= 0) {
+      handleDropDownClick(results[selected]);
+      setSelected(-1);
+    }
+  };
+
   return (
     <>
       <GlobalStyle />
-      <Wrapper>
+      <Wrapper onKeyUp={handleKeyUp}>
         <Title>
           국내 모든 임상시험 검색하고 <br />
           온라인으로 참여하기
@@ -24,7 +43,14 @@ const Main = () => {
           setSearchQuery={setSearchQuery}
           setResults={setResults}
         />
-        {isDropDownOpen && <DropDown searchQuery={searchQuery} setSearchQuery={setSearchQuery} results={results} />}
+        {isDropDownOpen && (
+          <DropDown
+            searchQuery={searchQuery}
+            results={results}
+            selected={selected}
+            handleDropDownClick={handleDropDownClick}
+          />
+        )}
       </Wrapper>
     </>
   );

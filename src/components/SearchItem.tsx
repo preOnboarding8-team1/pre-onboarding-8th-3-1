@@ -1,16 +1,23 @@
+import React from 'react';
 import styled from 'styled-components';
 import { Result } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
 
 type SearchItemProps = {
   item: Result;
+  idx: number;
+  selected: number;
   query: string;
+  handleDropDownClick: (clickedOption: string) => void;
 };
 
-const SearchItem = ({ item, query }: SearchItemProps) => {
+const SearchItem = ({ item, idx, selected, query, handleDropDownClick }: SearchItemProps) => {
   const { sickCd, sickNm } = item;
   return (
-    <SearchItemWrapper key={sickCd}>
+    <SearchItemWrapper
+      key={sickCd}
+      onClick={() => handleDropDownClick(sickNm)}
+      className={selected === idx ? 'selected' : ''}>
       <PlaceholderIcon>
         <MagnifierIcon />
       </PlaceholderIcon>
@@ -33,7 +40,18 @@ export default SearchItem;
 
 const SearchItemWrapper = styled.div`
   display: flex;
-  padding-bottom: 1rem;
+  padding: 0.7rem;
+  cursor: pointer;
+  align-items: center;
+  transition: all 0.1s ease-in-out;
+
+  :hover {
+    background-color: var(--baby-blue);
+  }
+
+  &.selected {
+    background-color: var(--baby-blue);
+  }
 `;
 
 const PlaceholderIcon = styled.div`
