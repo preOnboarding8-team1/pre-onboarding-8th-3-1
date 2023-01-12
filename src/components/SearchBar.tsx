@@ -3,6 +3,7 @@ import uuid from 'react-uuid';
 import styled from 'styled-components';
 import { getSearch } from '../api/search';
 import useDebounce from '../hooks/useDebounce';
+import SearchIcon from './SearchIcon';
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
@@ -30,9 +31,7 @@ const SearchBar = () => {
         <SearchInput type="text" placeholder="질환명을 입력해주세요." onChange={handleChangeInput} />
       </InputContainer>
       <SearchBtn>
-        <svg viewBox="0 0 16 16" fill="#fff" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6.56 0a6.56 6.56 0 015.255 10.49L16 14.674 14.675 16l-4.186-4.184A6.56 6.56 0 116.561 0zm0 1.875a4.686 4.686 0 100 9.372 4.686 4.686 0 000-9.372z" />
-        </svg>
+        <SearchIcon color="#fff" />
       </SearchBtn>
       <KeywordBox>
         <KeywordOn>
@@ -40,13 +39,7 @@ const SearchBar = () => {
             <KeywordList>
               {keyword && (
                 <SearchKeyword>
-                  <svg
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    preserveAspectRatio="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6.56 0a6.56 6.56 0 015.255 10.49L16 14.674 14.675 16l-4.186-4.184A6.56 6.56 0 116.561 0zm0 1.875a4.686 4.686 0 100 9.372 4.686 4.686 0 000-9.372z" />
-                  </svg>
+                  <SearchIcon color="currentColor" />
                   <span style={{ color: '#111', fontWeight: '700' }}>{keyword}</span>
                 </SearchKeyword>
               )}
@@ -57,14 +50,17 @@ const SearchBar = () => {
                   {keywords?.data.map((el) => {
                     return (
                       <SearchKeyword key={uuid()}>
-                        <svg
-                          viewBox="0 0 16 16"
-                          fill="currentColor"
-                          preserveAspectRatio="none"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <path d="M6.56 0a6.56 6.56 0 015.255 10.49L16 14.674 14.675 16l-4.186-4.184A6.56 6.56 0 116.561 0zm0 1.875a4.686 4.686 0 100 9.372 4.686 4.686 0 000-9.372z" />
-                        </svg>
-                        <span>{el.sickNm}</span>
+                        <SearchIcon color="currentColor" />
+                        <span>
+                          {el.sickNm
+                            .replaceAll(keyword, `3as3${keyword}3as3`)
+                            .split('3as3')
+                            .map((keywordEl) => {
+                              return (
+                                <span style={{ fontWeight: keywordEl === keyword ? '700' : '400' }}>{keywordEl}</span>
+                              );
+                            })}
+                        </span>
                       </SearchKeyword>
                     );
                   })}
@@ -180,7 +176,7 @@ const SearchKeyword = styled.div`
   gap: 10px;
   font-size: 17px;
   font-weight: 400;
-  color: gray;
+  color: #111;
   margin: 0;
   &:not(:first-child) {
     margin-bottom: 10px;
