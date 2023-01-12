@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import uuid from 'react-uuid';
 import styled from 'styled-components';
 import { getSearch } from '../api/search';
 import useDebounce from '../hooks/useDebounce';
@@ -15,7 +15,9 @@ const SearchBar = () => {
       const result = await getSearch(debounceKeyword);
       setKeywords(result);
     };
-    getKeyword();
+    if (debounceKeyword) {
+      getKeyword();
+    }
   }, [debounceKeyword]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +56,7 @@ const SearchBar = () => {
                   <KeywordTitle>추천 검색어</KeywordTitle>
                   {keywords?.data.map((el) => {
                     return (
-                      <SearchKeyword>
+                      <SearchKeyword key={uuid()}>
                         <svg
                           viewBox="0 0 16 16"
                           fill="currentColor"
