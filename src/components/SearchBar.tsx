@@ -8,6 +8,7 @@ import SearchIcon from './SearchIcon';
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [keywords, setKeywords] = useState<any>();
+  const [isKeywordBox, setIsKeywordBox] = useState(false);
 
   const debounceKeyword = useDebounce(keyword);
 
@@ -21,6 +22,13 @@ const SearchBar = () => {
     }
   }, [debounceKeyword]);
 
+  const handleOnFocus = () => {
+    setIsKeywordBox(true);
+  };
+  const handleOffFocus = () => {
+    setIsKeywordBox(false);
+  };
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
   };
@@ -28,70 +36,78 @@ const SearchBar = () => {
   return (
     <SearchWrap>
       <InputContainer>
-        <SearchInput type="text" placeholder="질환명을 입력해주세요." onChange={handleChangeInput} />
+        <SearchInput
+          type="text"
+          placeholder="질환명을 입력해주세요."
+          onFocus={handleOnFocus}
+          onBlur={handleOffFocus}
+          onChange={handleChangeInput}
+        />
       </InputContainer>
       <SearchBtn>
         <SearchIcon color="#fff" />
       </SearchBtn>
-      <KeywordBox>
-        <KeywordOn>
-          <KeywordListBox>
-            <KeywordList>
-              {keyword && (
-                <SearchKeyword>
-                  <SearchIcon color="currentColor" />
-                  <span style={{ color: '#111', fontWeight: '700' }}>{keyword}</span>
-                </SearchKeyword>
-              )}
-
-              {keyword.length !== 0 && keywords?.data && (
-                <>
-                  <KeywordTitle>추천 검색어</KeywordTitle>
-                  {keywords?.data.map((el) => {
-                    return (
-                      <SearchKeyword key={uuid()}>
-                        <SearchIcon color="currentColor" />
-                        <span>
-                          {el.sickNm
-                            .replaceAll(keyword, `3as3${keyword}3as3`)
-                            .split('3as3')
-                            .map((keywordEl) => {
-                              return (
-                                <span style={{ fontWeight: keywordEl === keyword ? '700' : '400' }}>{keywordEl}</span>
-                              );
-                            })}
-                        </span>
-                      </SearchKeyword>
-                    );
-                  })}
-                </>
-              )}
-            </KeywordList>
-          </KeywordListBox>
-        </KeywordOn>
-        {!keyword && (
-          <KeywordOff>
-            <KeywordTop>
-              <KeywordTitle>최근 검색어</KeywordTitle>
+      {isKeywordBox && (
+        <KeywordBox>
+          <KeywordOn>
+            <KeywordListBox>
               <KeywordList>
-                <SearchKeyword>최근 검색어가 없습니다.</SearchKeyword>
-                {/* <SearchKeyword>췌장암</SearchKeyword> */}
+                {keyword && (
+                  <SearchKeyword>
+                    <SearchIcon color="currentColor" />
+                    <span style={{ color: '#111', fontWeight: '700' }}>{keyword}</span>
+                  </SearchKeyword>
+                )}
+
+                {keyword.length !== 0 && keywords?.data && (
+                  <>
+                    <KeywordTitle>추천 검색어</KeywordTitle>
+                    {keywords?.data.map((keywordDatas) => {
+                      return (
+                        <SearchKeyword key={uuid()}>
+                          <SearchIcon color="currentColor" />
+                          <span>
+                            {keywordDatas.sickNm
+                              .replaceAll(keyword, `3as3${keyword}3as3`)
+                              .split('3as3')
+                              .map((keywordEl) => {
+                                return (
+                                  <span style={{ fontWeight: keywordEl === keyword ? '700' : '400' }}>{keywordEl}</span>
+                                );
+                              })}
+                          </span>
+                        </SearchKeyword>
+                      );
+                    })}
+                  </>
+                )}
               </KeywordList>
-            </KeywordTop>
-            <Line />
-            <KeywordBottom>
-              <KeywordTitle>추천 검색어로 검색해보세요</KeywordTitle>
-              <KeywordContainer>
-                <RecommendKeyword>B형간염</RecommendKeyword>
-                <RecommendKeyword>비만</RecommendKeyword>
-                <RecommendKeyword>관절염</RecommendKeyword>
-                <RecommendKeyword>우울증</RecommendKeyword>
-                <RecommendKeyword>식도염</RecommendKeyword>
-              </KeywordContainer>
-            </KeywordBottom>
-          </KeywordOff>
-        )}
-      </KeywordBox>
+            </KeywordListBox>
+          </KeywordOn>
+          {!keyword && (
+            <KeywordOff>
+              <KeywordTop>
+                <KeywordTitle>최근 검색어</KeywordTitle>
+                <KeywordList>
+                  <SearchKeyword>최근 검색어가 없습니다.</SearchKeyword>
+                  {/* <SearchKeyword>췌장암</SearchKeyword> */}
+                </KeywordList>
+              </KeywordTop>
+              <Line />
+              <KeywordBottom>
+                <KeywordTitle>추천 검색어로 검색해보세요</KeywordTitle>
+                <KeywordContainer>
+                  <RecommendKeyword>B형간염</RecommendKeyword>
+                  <RecommendKeyword>비만</RecommendKeyword>
+                  <RecommendKeyword>관절염</RecommendKeyword>
+                  <RecommendKeyword>우울증</RecommendKeyword>
+                  <RecommendKeyword>식도염</RecommendKeyword>
+                </KeywordContainer>
+              </KeywordBottom>
+            </KeywordOff>
+          )}
+        </KeywordBox>
+      )}
     </SearchWrap>
   );
 };
