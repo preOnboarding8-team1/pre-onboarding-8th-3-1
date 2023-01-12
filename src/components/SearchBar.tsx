@@ -82,7 +82,7 @@ const SearchBar = () => {
             <KeywordBottom>
               <KeywordTitle>추천 검색어로 검색해보세요</KeywordTitle>
               <KeywordContainer>
-                <RecommendKeyword>B형감염</RecommendKeyword>
+                <RecommendKeyword>B형간염</RecommendKeyword>
                 <RecommendKeyword>비만</RecommendKeyword>
                 <RecommendKeyword>관절염</RecommendKeyword>
                 <RecommendKeyword>우울증</RecommendKeyword>
