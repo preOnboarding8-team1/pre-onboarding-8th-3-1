@@ -5,13 +5,14 @@ import SearchBar from './components/Search/SearchBar';
 import FocusContext from './store/focus-context';
 
 const App = () => {
-  const ctx = useContext(FocusContext);
+  const focusCtx = useContext(FocusContext);
+  // FIXME 캐시 작동 확인용 새로고침 이벤트
   localStorage.clear();
-
+  // @TODO RecommendItemBox에 Context 감싸기 
   return ( 
     <AppWrapper>
       <SearchBar />
-      {ctx.isFocused && <RecommendItemBox />}
+      {focusCtx.isFocused && <RecommendItemBox />}
     </AppWrapper>
   );
 };

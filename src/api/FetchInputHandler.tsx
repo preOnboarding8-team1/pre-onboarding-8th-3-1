@@ -12,6 +12,7 @@ const FetchInputHandler = async (query: string) => {
   // @TODO 검색한 데이터를 저장하는 store 구현
   const cachedData = await localStorage.getItem(query)
   if(cachedData){
+    // FIXME tesing consolelog
     console.log("캐시된 데이터 호출")
     return JSON.parse(cachedData)
   }

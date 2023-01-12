@@ -4,24 +4,24 @@ import Card from '../../UI/Card';
 import searchIcon from '../../assets/search_blue.png';
 import FocusContext from '../../store/focus-context';
 import FetchInputHandler from '../../api/FetchInputHandler';
+import DataContext from '../../store/data-context';
 
 const SearchBar = () => {
-  // @TODO onFocus, onBlur 처리할 Context 만들기
-  // focus, blur에 따라 context를 만들어 RecommendItemBox를 보일지 말지 결정한다.
-  const ctx = useContext(FocusContext);
-  // @TODO 입력을 받는 onChangeHanlder 함수 만들기
-  // 검색값(State)이 변할 때마다 debounce 방식으로 API를 호출하는 effect hook 만들기
+  const focusCtx = useContext(FocusContext);
+  const dataCtx = useContext(DataContext);
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    const debouncer = setTimeout(()=>{
-      if(input){
-        FetchInputHandler(input).then((res) => {console.log(res)});
+    const debouncer = setTimeout(() => {
+      if (input) {
+        FetchInputHandler(input).then((res) => {
+          dataCtx.setRecommendItemList(res);
+        });
       }
-    },500)
+    }, 500);
     return () => {
-      clearTimeout(debouncer)
-    }
+      clearTimeout(debouncer);
+    };
   }, [input]);
 
   const onChangeHandler = (e) => {
@@ -34,8 +34,8 @@ const SearchBar = () => {
         <SearchBarInput
           type="search"
           placeholder="질환명을 검색해주세요"
-          onFocus={ctx.onFocus}
-          onBlur={ctx.onBlur}
+          onFocus={focusCtx.onFocus}
+          onBlur={focusCtx.onBlur}
           onChange={onChangeHandler}
           value={input}
         />

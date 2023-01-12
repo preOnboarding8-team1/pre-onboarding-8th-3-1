@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components'
 import Card from '../../UI/Card';
-import TEMP_DATA from '../../assets/TEMP_DATA';
 import {RecommendItemType} from '../Models/RecommendItemTypes';
 import RecommendItem from './RecommendItem';
+import DataContext from '../../store/data-context';
 
 const RecommendItemBox = () => {
-    const RecommendItemList = TEMP_DATA.map((item:RecommendItemType)=>(
+    const dataCtx = useContext(DataContext)
+
+    const RecommendItemList = dataCtx.recommendItemList.map((item:RecommendItemType)=>(
         <RecommendItem sickName={item.sickNm}/>
     ))
 
