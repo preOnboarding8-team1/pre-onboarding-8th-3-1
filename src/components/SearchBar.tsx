@@ -2,18 +2,24 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getSearch } from '../api/search';
+import useDebounce from '../hooks/useDebounce';
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [keywords, setKeywords] = useState<any>();
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
+  const debounceKeyword = useDebounce(keyword);
+
+  useEffect(() => {
     const getKeyword = async () => {
-      const result = await getSearch(e.target.value);
+      const result = await getSearch(debounceKeyword);
       setKeywords(result);
     };
     getKeyword();
+  }, [debounceKeyword]);
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
   };
 
   return (
