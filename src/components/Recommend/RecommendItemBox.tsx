@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import styled from 'styled-components';
 import Card from '../../UI/Card';
 import { RecommendItemType } from '../Models/RecommendItemTypes';
@@ -10,7 +10,7 @@ const RecommendItemBox = () => {
   const dataCtx = useContext(DataContext);
   const selectCtx = useContext(SelectContext);
 
-  let RecommendItemList;
+  let RecommendItemList: ReactElement<unknown> | Array<JSX.Element>
 
   if (dataCtx.recommendItemList.length === 0) {
     RecommendItemList = <NotingDiv>검색어 없음</NotingDiv>;

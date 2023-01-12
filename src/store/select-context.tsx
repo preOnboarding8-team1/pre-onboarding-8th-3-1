@@ -8,7 +8,7 @@ export interface SelectContextValue {
 
 const SelectContext = React.createContext<SelectContextValue>(null!);
 
-const arrowKeyReducer = (state:number, action) => {
+const arrowKeyReducer = (state:number, action:{ type: 'UP' | 'DOWN' | 'RESET' }) => {
   switch (action.type) {
     case 'UP':
       if (state === -1) {
