@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { searchAPI } from '../api/searchAPI';
+import { useDebounce } from '../hooks/useDebounce';
+import { Result } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
 
 export type SearchBarProps = {
   setIsDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>;
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  setResults: React.Dispatch<React.SetStateAction<Result[]>>;
 };
 
-const SearchBar = ({ setIsDropDownOpen, searchValue, setSearchValue }: SearchBarProps) => {
+const SearchBar = ({ setIsDropDownOpen, searchValue, setSearchValue, setResults }: SearchBarProps) => {
+  const debouncer = useDebounce();
+
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  useEffect(() => {
+    debouncer(async () => {
+      const data = await searchAPI.getResult(`/sick?q=${searchValue}`);
+      setResults(data.slice(0, 10));
+    }, 500);
+  }, [searchValue]);
+
   return (
     <Wrapper>
       <Input
@@ -16,7 +33,7 @@ const SearchBar = ({ setIsDropDownOpen, searchValue, setSearchValue }: SearchBar
         onFocus={() => setIsDropDownOpen(true)}
         onBlur={() => setIsDropDownOpen(false)}
         value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
+        onChange={handleChangeValue}
       />
       <PlaceholderIcon>
         <MagnifierIcon />

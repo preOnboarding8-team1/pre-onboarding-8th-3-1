@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DropDown from '../components/DropDown';
 import SearchBar from '../components/SearchBar';
 import GlobalStyle from '../style/GlobalStyle';
+import { Result } from '../types/types';
 
 const Main = () => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+
+  const [results, setResults] = useState<Result[]>();
 
   return (
     <>
@@ -16,8 +19,13 @@ const Main = () => {
           국내 모든 임상시험 검색하고 <br />
           온라인으로 참여하기
         </Title>
-        <SearchBar setIsDropDownOpen={setIsDropDownOpen} searchValue={searchValue} setSearchValue={setSearchValue} />
-        {isDropDownOpen && <DropDown searchValue={searchValue} setSearchValue={setSearchValue} />}
+        <SearchBar
+          setIsDropDownOpen={setIsDropDownOpen}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          setResults={setResults}
+        />
+        {isDropDownOpen && <DropDown searchValue={searchValue} setSearchValue={setSearchValue} results={results} />}
       </Wrapper>
     </>
   );
