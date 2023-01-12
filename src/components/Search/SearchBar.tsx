@@ -19,6 +19,7 @@ const SearchBar = () => {
           dataCtx.setRecommendItemList(res);
         });
       }
+      dataCtx.setRecommendItemList(()=>[]);
     }, 500);
     return () => {
       clearTimeout(debouncer);
