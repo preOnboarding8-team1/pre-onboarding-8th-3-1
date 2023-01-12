@@ -1,4 +1,3 @@
-// @TODO 검색 결과를 저장할 Context 만들기
 import React, { useState, useMemo } from 'react';
 import { RecommendItemType } from '../components/Models/RecommendItemTypes';
 

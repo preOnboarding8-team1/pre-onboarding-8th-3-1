@@ -33,18 +33,15 @@
 
   ```jsx
     const FetchInputHandler = async (query: string) => {
-  // @TODO 검색한 데이터를 저장하는 store 구현
+
   const cachedData = await localStorage.getItem(query);
   if (cachedData) {
-    // FIXME tesing consolelog
-    // eslint-disable-next-line
     console.log('캐시된 데이터 호출');
     return JSON.parse(cachedData);
   }
   const response = await client.get(`?q=${query}`);
   const dataParser = JSON.stringify(response.data);
   await localStorage.setItem(query, dataParser);
-  // eslint-disable-next-line
   console.info('calling api');
   return response.data;
     };

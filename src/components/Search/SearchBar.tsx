@@ -32,8 +32,6 @@ const SearchBar = () => {
     setInput(e.target.value);
   };
 
-  // @TODO 포커스가 되어있는 상태라면, 키보드 조작을 통해 인덱스를 조작하는 함수를 만든다. 초기값은 -1
-
 
   return (
     <SearchBarWrap>
