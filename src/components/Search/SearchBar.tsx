@@ -5,10 +5,12 @@ import searchIcon from '../../assets/search_blue.png';
 import FocusContext from '../../store/focus-context';
 import FetchInputHandler from '../../api/FetchInputHandler';
 import DataContext from '../../store/data-context';
+import SelectContext from '../../store/select-context';
 
 const SearchBar = () => {
   const focusCtx = useContext(FocusContext);
   const dataCtx = useContext(DataContext);
+  const selectCtx = useContext(SelectContext)
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -19,16 +21,19 @@ const SearchBar = () => {
           dataCtx.setRecommendItemList(res);
         });
       }
-      dataCtx.setRecommendItemList(()=>[]);
+      dataCtx.setRecommendItemList(() => []);
     }, 500);
     return () => {
       clearTimeout(debouncer);
     };
   }, [input]);
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
+
+  // @TODO 포커스가 되어있는 상태라면, 키보드 조작을 통해 인덱스를 조작하는 함수를 만든다. 초기값은 -1
+
 
   return (
     <SearchBarWrap>
@@ -39,6 +44,7 @@ const SearchBar = () => {
           onFocus={focusCtx.onFocus}
           onBlur={focusCtx.onBlur}
           onChange={onChangeHandler}
+          onKeyDown={selectCtx.onKeyDownHandler}
           value={input}
         />
         <ImageWrap src={searchIcon} alt="검색" />

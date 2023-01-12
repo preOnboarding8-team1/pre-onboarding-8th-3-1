@@ -4,17 +4,24 @@ import Card from '../../UI/Card';
 import { RecommendItemType } from '../Models/RecommendItemTypes';
 import RecommendItem from './RecommendItem';
 import DataContext from '../../store/data-context';
+import SelectContext from '../../store/select-context';
 
 const RecommendItemBox = () => {
   const dataCtx = useContext(DataContext);
+  const selectCtx = useContext(SelectContext);
 
   let RecommendItemList;
 
   if (dataCtx.recommendItemList.length === 0) {
     RecommendItemList = <NotingDiv>검색어 없음</NotingDiv>;
   } else {
-    RecommendItemList = dataCtx.recommendItemList.map((item: RecommendItemType) => (
-      <RecommendItem sickName={item.sickNm} boldString={dataCtx.searchedKeyword} />
+    RecommendItemList = dataCtx.recommendItemList.map((item: RecommendItemType, index) => (
+      <RecommendItem
+        key={item.sickCd}
+        sickName={item.sickNm}
+        boldString={dataCtx.searchedKeyword}
+        isSelected={index === selectCtx.selectedNumber}
+      />
     ));
   }
 

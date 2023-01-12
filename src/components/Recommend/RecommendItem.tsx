@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { RecommendItemProps } from '../Models/RecommendItemTypes';
 import searchIcon from '../../assets/search_white.png';
 
-const RecommendItem = ({ sickName, boldString }: RecommendItemProps) => {
+const RecommendItem = ({ sickName, boldString, isSelected }: RecommendItemProps) => {
 
   return (
-    <RecommendItemWrap>
+    <RecommendItemWrap isSelected={isSelected}>
       <ItemSpan>
         <ImageWrap src={searchIcon} />
         <InnerText>{sickName.split(boldString)[0]}</InnerText>
@@ -22,7 +22,14 @@ const ItemSpan = styled.span`
   padding: 10px;
 `;
 
-const RecommendItemWrap = styled.div``;
+const RecommendItemWrap = styled.div`
+  ${(props: { isSelected: boolean }) =>
+    props.isSelected
+      ? `
+      background: lightgray;
+    `
+      : ''}
+`;
 
 const ImageWrap = styled.img`
   width: 20px;

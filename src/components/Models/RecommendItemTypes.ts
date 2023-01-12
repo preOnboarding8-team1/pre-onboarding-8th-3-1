@@ -6,4 +6,5 @@ export type RecommendItemType = {
 export interface RecommendItemProps {
     sickName: string;
     boldString : string;
+    isSelected: boolean;
 }
