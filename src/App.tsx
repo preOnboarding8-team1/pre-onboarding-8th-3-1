@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
+import axios from 'axios';
 import Search from './Search';
 
 const App = () => {
   const [focus, setFocus] = useState<boolean>(false);
-  const [disease, setDisease] = useState('');
+  const [diseases, setDiseases] = useState<object>(null);
 
   const handleOnFocus = (): void => {
     const inputBox = document.querySelector<HTMLElement>('.inputBox');
@@ -28,7 +29,37 @@ const App = () => {
     const inputDisease = document.querySelector<HTMLInputElement>('.inputDisease');
 
     inputDisease.value = '';
+    setDiseases(null);
     inputDisease.focus();
+  };
+
+  function debounce(changeText, delay = 500) {
+    console.dir(changeText);
+    let timer = null;
+
+    return function (...args: any[]) {
+      clearTimeout(timer);
+      timer = setTimeout(() => changeText.apply(this, args), delay);
+    };
+  }
+  const handleChangeText = (event: Event): void => {
+    const inputText = event.target as HTMLInputElement;
+    if (inputText.value === '') setDiseases(null);
+
+    try {
+      if (inputText.value) {
+        axios.get(`http://localhost:4000/sick?q=${inputText.value}`).then((res) => {
+          console.info('calling api');
+          if (res.data.length === 0) {
+            setDiseases(null);
+            return;
+          }
+          setDiseases(res.data);
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -46,6 +77,7 @@ const App = () => {
             placeholder="질환명을 입력해 주세요."
             onFocus={handleOnFocus}
             onBlur={handleOutFocus}
+            onInput={debounce(handleChangeText)}
           />
           <InputClearButton className="buttonClear" onClick={handleInputText}>
             X
@@ -53,7 +85,7 @@ const App = () => {
           <InputSearchButton />
         </InputContainer>
       </MainContainer>
-      {focus && <Search setDisease={setDisease} disease={disease} />}
+      {focus && <Search diseases={diseases} />}
     </>
   );
 };
