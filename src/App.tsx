@@ -108,7 +108,7 @@ const App = () => {
             placeholder="질환명을 입력해 주세요."
             onFocus={handleOnFocus}
             onBlur={handleOutFocus}
-            onInput={debounce(handleChangeText)}
+            onChange={debounce(handleChangeText)}
             onKeyDown={handleKeyArrow}
           />
           <InputClearButton className="buttonClear" onClick={handleInputText}>
