@@ -6,6 +6,7 @@ import Search from './Search';
 const App = () => {
   const [focus, setFocus] = useState<boolean>(false);
   const [diseases, setDiseases] = useState<object>(null);
+  let selectedIndex = null;
 
   const handleOnFocus = (): void => {
     const inputBox = document.querySelector<HTMLElement>('.inputBox');
@@ -34,7 +35,6 @@ const App = () => {
   };
 
   function debounce(changeText, delay = 500) {
-    console.dir(changeText);
     let timer = null;
 
     return function (...args: any[]) {
@@ -62,6 +62,37 @@ const App = () => {
     }
   };
 
+  const handleKeyArrow = (event: React.KeyboardEvent) => {
+    switch (event.key) {
+      case 'ArrowDown': {
+        const diseaseName = document.querySelectorAll<HTMLElement>('.diseaseName');
+        if (selectedIndex === null) selectedIndex = 0;
+        else ++selectedIndex;
+        if (diseaseName.length === selectedIndex) selectedIndex = 0;
+        diseaseName.forEach((unselected) => {
+          unselected.style.backgroundColor = 'white';
+        });
+        diseaseName[selectedIndex].style.backgroundColor = '#ecf0f2';
+
+        break;
+      }
+
+      case 'ArrowUp': {
+        const diseaseName = document.querySelectorAll<HTMLElement>('.diseaseName');
+        --selectedIndex;
+        if (selectedIndex < 0) {
+          selectedIndex = diseaseName.length - 1;
+        }
+        diseaseName.forEach((unselected: HTMLElement) => {
+          unselected.style.backgroundColor = 'white';
+        });
+        diseaseName[selectedIndex].style.backgroundColor = '#ecf0f2';
+        break;
+      }
+      default:
+    }
+  };
+
   return (
     <>
       <MainContainer>
@@ -78,6 +109,7 @@ const App = () => {
             onFocus={handleOnFocus}
             onBlur={handleOutFocus}
             onInput={debounce(handleChangeText)}
+            onKeyDown={handleKeyArrow}
           />
           <InputClearButton className="buttonClear" onClick={handleInputText}>
             X
