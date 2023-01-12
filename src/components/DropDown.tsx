@@ -1,25 +1,42 @@
 import styled from 'styled-components';
 import { SUGGESTIONS } from '../constants/constants';
+import { Result } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
 
-export type DropDownProps = {
+type DropDownProps = {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  results: Result[];
 };
 
-const DropDown = ({ searchValue, setSearchValue }: DropDownProps) => {
+const DropDown = ({ searchValue, setSearchValue, results }: DropDownProps) => {
   return (
     <Wrapper>
-      <SectionTitle>최근 검색어</SectionTitle>
       {searchValue ? (
         <SearchResult>
-          <PlaceholderIcon>
-            <MagnifierIcon />
-          </PlaceholderIcon>
-          <SearchResultText>{searchValue}</SearchResultText>
+          <SearchItemWrapper>
+            <PlaceholderIcon>
+              <MagnifierIcon />
+            </PlaceholderIcon>
+            <SearchValueText>{searchValue}</SearchValueText>
+          </SearchItemWrapper>
+
+          <SectionTitle>추천 검색어</SectionTitle>
+
+          <ResultList>
+            {results?.map((result) => (
+              <SearchItemWrapper key={result.sickCd}>
+                <PlaceholderIcon>
+                  <MagnifierIcon />
+                </PlaceholderIcon>
+                <SearchValueText>{result.sickNm}</SearchValueText>
+              </SearchItemWrapper>
+            ))}
+          </ResultList>
         </SearchResult>
       ) : (
         <>
+          <SectionTitle>최근 검색어</SectionTitle>
           <NoRecentSearch>최근 검색어가 없습니다</NoRecentSearch>
           <Dividor />
 
@@ -40,7 +57,7 @@ const DropDown = ({ searchValue, setSearchValue }: DropDownProps) => {
 export default DropDown;
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 450px;
   margin-top: 0.5rem;
   padding: 1.2rem;
   border-radius: 20px;
@@ -52,11 +69,18 @@ const Wrapper = styled.div`
 
 const SectionTitle = styled.span`
   color: var(--middle-gray);
-  margin-bottom: 1rem;
+  margin: 1rem 0;
+  font-size: 0.8rem;
 `;
 
 const SearchResult = styled.div`
   display: flex;
+  flex-direction: column;
+`;
+
+const SearchItemWrapper = styled.div`
+  display: flex;
+  padding: 0.5rem 0;
 `;
 
 const PlaceholderIcon = styled.div`
@@ -65,10 +89,17 @@ const PlaceholderIcon = styled.div`
   margin-right: 1rem;
   color: var(--light-gray);
 `;
-const SearchResultText = styled.span`
+
+const SearchValueText = styled.span`
   font-weight: 600;
 `;
 
+const ResultList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+/* 검색어 없는 경우  */
 const NoRecentSearch = styled.span`
   color: var(--light-gray);
 `;
