@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { RecommendItemProps } from '../Models/RecommendItemTypes';
 import searchIcon from '../../assets/search_white.png' 
 
-const RecommendItem = ({ sickName }: RecommendItemProps) => {
+const RecommendItem = ({ sickName, boldString }: RecommendItemProps) => {
   return (
     <RecommendItemWrap>
       <ItemSpan>

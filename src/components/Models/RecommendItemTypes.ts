@@ -4,5 +4,6 @@ export type RecommendItemType = {
 };
 
 export interface RecommendItemProps {
-    sickName: string
+    sickName: string;
+    boldString : string;
 }

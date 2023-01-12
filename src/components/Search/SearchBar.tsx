@@ -15,6 +15,7 @@ const SearchBar = () => {
     const debouncer = setTimeout(() => {
       if (input) {
         FetchInputHandler(input).then((res) => {
+          dataCtx.setSearchedKeyword(() => input);
           dataCtx.setRecommendItemList(res);
         });
       }

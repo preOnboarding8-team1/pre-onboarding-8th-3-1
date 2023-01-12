@@ -9,7 +9,7 @@ const RecommendItemBox = () => {
     const dataCtx = useContext(DataContext)
 
     const RecommendItemList = dataCtx.recommendItemList.map((item:RecommendItemType)=>(
-        <RecommendItem sickName={item.sickNm}/>
+        <RecommendItem sickName={item.sickNm} boldString={dataCtx.searchedKeyword}/>
     ))
 
     return (
