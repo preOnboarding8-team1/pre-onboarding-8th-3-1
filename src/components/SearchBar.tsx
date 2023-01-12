@@ -1,16 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const SearchWrap = styled.div`
   width: 490px;
   margin: 0 auto;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
   background-color: #fff;
   border-radius: 48px;
   padding: 20px 10px 20px 24px;
   display: flex;
   justify-content: space-between;
   position: relative;
+  :focus-within {
+    border: 2px solid blue;
+  }
 `;
 
 const InputContainer = styled.div`
