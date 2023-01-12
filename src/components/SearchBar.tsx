@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGetResults } from '../hooks/useGetResults';
-import { Result } from '../types/types';
+import { Result, ReactSetState } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
 
 export type SearchBarProps = {
   searchQuery: string;
-  setIsDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  setResults: React.Dispatch<React.SetStateAction<Result[]>>;
+  setIsDropDownOpen: ReactSetState<boolean>;
+  setSearchQuery: ReactSetState<string>;
+  setResults: ReactSetState<Result[]>;
 };
 
 const SearchBar = ({ setIsDropDownOpen, searchQuery, setSearchQuery, setResults }: SearchBarProps) => {
@@ -25,7 +25,7 @@ const SearchBar = ({ setIsDropDownOpen, searchQuery, setSearchQuery, setResults 
       <Input
         placeholder="질환명을 입력해 주세요."
         onFocus={() => setIsDropDownOpen(true)}
-        // onBlur={() => setIsDropDownOpen(false)}
+        // onBlur={() => setTimeout(() => setIsDropDownOpen(false), 300)}
         value={searchQuery}
         onChange={handleChangeQuery}
       />
