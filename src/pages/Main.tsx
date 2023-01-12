@@ -7,8 +7,7 @@ import { Result } from '../types/types';
 
 const Main = () => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-
+  const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<Result[]>();
 
   return (
@@ -21,11 +20,11 @@ const Main = () => {
         </Title>
         <SearchBar
           setIsDropDownOpen={setIsDropDownOpen}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
           setResults={setResults}
         />
-        {isDropDownOpen && <DropDown searchValue={searchValue} setSearchValue={setSearchValue} results={results} />}
+        {isDropDownOpen && <DropDown searchQuery={searchQuery} setSearchQuery={setSearchQuery} results={results} />}
       </Wrapper>
     </>
   );

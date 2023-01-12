@@ -2,37 +2,37 @@ import styled from 'styled-components';
 import { SUGGESTIONS } from '../constants/constants';
 import { Result } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
+import SearchItem from './SearchItem';
 
 type DropDownProps = {
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   results: Result[];
 };
 
-const DropDown = ({ searchValue, setSearchValue, results }: DropDownProps) => {
+const DropDown = ({ searchQuery, setSearchQuery, results }: DropDownProps) => {
   return (
     <Wrapper>
-      {searchValue ? (
+      {searchQuery ? (
         <SearchResult>
           <SearchItemWrapper>
             <PlaceholderIcon>
               <MagnifierIcon />
             </PlaceholderIcon>
-            <SearchValueText>{searchValue}</SearchValueText>
+            <SearchValueText>{searchQuery}</SearchValueText>
           </SearchItemWrapper>
 
-          <SectionTitle>추천 검색어</SectionTitle>
+          {results.length > 0 && (
+            <>
+              <SectionTitle>추천 검색어</SectionTitle>
 
-          <ResultList>
-            {results?.map((result) => (
-              <SearchItemWrapper key={result.sickCd}>
-                <PlaceholderIcon>
-                  <MagnifierIcon />
-                </PlaceholderIcon>
-                <SearchValueText>{result.sickNm}</SearchValueText>
-              </SearchItemWrapper>
-            ))}
-          </ResultList>
+              <ResultList>
+                {results?.map((result) => (
+                  <SearchItem key={result.sickCd} item={result} query={searchQuery} />
+                ))}
+              </ResultList>
+            </>
+          )}
         </SearchResult>
       ) : (
         <>
@@ -69,8 +69,8 @@ const Wrapper = styled.div`
 
 const SectionTitle = styled.span`
   color: var(--middle-gray);
-  margin: 1rem 0;
   font-size: 0.8rem;
+  margin-bottom: 1rem;
 `;
 
 const SearchResult = styled.div`
@@ -80,7 +80,7 @@ const SearchResult = styled.div`
 
 const SearchItemWrapper = styled.div`
   display: flex;
-  padding: 0.5rem 0;
+  padding-bottom: 1rem;
 `;
 
 const PlaceholderIcon = styled.div`
@@ -90,9 +90,7 @@ const PlaceholderIcon = styled.div`
   color: var(--light-gray);
 `;
 
-const SearchValueText = styled.span`
-  font-weight: 600;
-`;
+const SearchValueText = styled.span``;
 
 const ResultList = styled.div`
   display: flex;
@@ -106,7 +104,7 @@ const NoRecentSearch = styled.span`
 
 const Dividor = styled.hr`
   border-top: 1px solid var(--light-gray);
-  margin: 2rem 0;
+  margin: 1rem 0;
 `;
 
 const Suggesstions = styled.div`

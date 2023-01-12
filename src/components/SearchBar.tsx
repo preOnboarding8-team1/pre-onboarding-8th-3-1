@@ -1,39 +1,33 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { searchAPI } from '../api/searchAPI';
-import { useDebounce } from '../hooks/useDebounce';
+import { useGetResults } from '../hooks/useGetResults';
 import { Result } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
 
 export type SearchBarProps = {
+  searchQuery: string;
   setIsDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   setResults: React.Dispatch<React.SetStateAction<Result[]>>;
 };
 
-const SearchBar = ({ setIsDropDownOpen, searchValue, setSearchValue, setResults }: SearchBarProps) => {
-  const debouncer = useDebounce();
-
-  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+const SearchBar = ({ setIsDropDownOpen, searchQuery, setSearchQuery, setResults }: SearchBarProps) => {
+  const handleChangeQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
-  useEffect(() => {
-    debouncer(async () => {
-      const data = await searchAPI.getResult(`/sick?q=${searchValue}`);
-      setResults(data.slice(0, 10));
-    }, 500);
-  }, [searchValue]);
+  const { getResults } = useGetResults(searchQuery, setResults);
+
+  useEffect(getResults, [searchQuery]);
 
   return (
     <Wrapper>
       <Input
         placeholder="질환명을 입력해 주세요."
         onFocus={() => setIsDropDownOpen(true)}
-        onBlur={() => setIsDropDownOpen(false)}
-        value={searchValue}
-        onChange={handleChangeValue}
+        // onBlur={() => setIsDropDownOpen(false)}
+        value={searchQuery}
+        onChange={handleChangeQuery}
       />
       <PlaceholderIcon>
         <MagnifierIcon />
