@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { SUGGESTIONS } from '../constants/constants';
 import { Result } from '../types/types';
+import Loading from './Loading';
 import MagnifierIcon from './MagnifierIcon';
 import SearchItem from './SearchItem';
 
@@ -10,9 +11,17 @@ type DropDownProps = {
   selected: number;
   handleDropDownClick: (clickedOption: string) => void;
   recentKeywords: string[];
+  isLoading: boolean;
 };
 
-const DropDown = ({ searchQuery, results, selected, handleDropDownClick, recentKeywords }: DropDownProps) => {
+const DropDown = ({
+  searchQuery,
+  results,
+  selected,
+  handleDropDownClick,
+  recentKeywords,
+  isLoading,
+}: DropDownProps) => {
   return (
     <Wrapper>
       {searchQuery ? (
@@ -24,23 +33,22 @@ const DropDown = ({ searchQuery, results, selected, handleDropDownClick, recentK
             <SearchValueText>{searchQuery}</SearchValueText>
           </SearchItemWrapper>
 
-          {results?.length > 0 && (
-            <>
-              <SectionTitle>추천 검색어</SectionTitle>
-
-              <ResultList>
-                {results?.map((result, idx) => (
-                  <SearchItem
-                    key={result.sickCd}
-                    item={result}
-                    query={searchQuery}
-                    handleDropDownClick={handleDropDownClick}
-                    idx={idx}
-                    selected={selected}
-                  />
-                ))}
-              </ResultList>
-            </>
+          <SectionTitle>추천 검색어</SectionTitle>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <ResultList>
+              {results?.map((result, idx) => (
+                <SearchItem
+                  key={result.sickCd}
+                  item={result}
+                  query={searchQuery}
+                  handleDropDownClick={handleDropDownClick}
+                  idx={idx}
+                  selected={selected}
+                />
+              ))}
+            </ResultList>
           )}
         </SearchResult>
       ) : (

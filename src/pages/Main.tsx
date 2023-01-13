@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DropDown from '../components/DropDown';
 import SearchBar from '../components/SearchBar';
+import { useGetResults } from '../hooks/useGetResults';
 import GlobalStyle from '../style/GlobalStyle';
 import { Result } from '../types/types';
 
@@ -11,6 +12,12 @@ const Main = () => {
   const [results, setResults] = useState<Result[]>();
   const [selected, setSelected] = useState(-1);
   const [recentKeywords, setRecentKeywords] = useState(['']);
+
+  const { getResults, isLoading } = useGetResults(searchQuery, setResults);
+
+  useEffect(() => {
+    getResults();
+  }, [searchQuery]);
 
   const handleDropDownClick = (clickedOption) => {
     setSearchQuery(clickedOption);
@@ -41,7 +48,6 @@ const Main = () => {
           setIsDropDownOpen={setIsDropDownOpen}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          setResults={setResults}
           setRecentKeywords={setRecentKeywords}
         />
         {isDropDownOpen && (
@@ -51,6 +57,7 @@ const Main = () => {
             selected={selected}
             handleDropDownClick={handleDropDownClick}
             recentKeywords={recentKeywords}
+            isLoading={isLoading}
           />
         )}
       </Wrapper>

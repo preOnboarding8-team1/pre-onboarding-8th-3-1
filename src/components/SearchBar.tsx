@@ -1,24 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useGetResults } from '../hooks/useGetResults';
-import { Result, ReactSetState } from '../types/types';
+import { ReactSetState } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
 
 type SearchBarProps = {
   searchQuery: string;
   setIsDropDownOpen: ReactSetState<boolean>;
   setSearchQuery: ReactSetState<string>;
-  setResults: ReactSetState<Result[]>;
   setRecentKeywords: ReactSetState<string[]>;
 };
 
-const SearchBar = ({
-  setIsDropDownOpen,
-  searchQuery,
-  setSearchQuery,
-  setResults,
-  setRecentKeywords,
-}: SearchBarProps) => {
+const SearchBar = ({ setIsDropDownOpen, searchQuery, setSearchQuery, setRecentKeywords }: SearchBarProps) => {
   const handleChangeQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -32,10 +24,6 @@ const SearchBar = ({
     });
     setSearchQuery('');
   };
-
-  const { getResults } = useGetResults(searchQuery, setResults);
-
-  useEffect(getResults, [searchQuery]);
 
   return (
     <Wrapper onSubmit={handleOnsubmit}>
