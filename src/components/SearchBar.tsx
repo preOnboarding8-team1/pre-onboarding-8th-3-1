@@ -8,9 +8,18 @@ import SearchIcon from './SearchIcon';
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [keywords, setKeywords] = useState<any>();
+  const [recentSearches, setRecentSearches] = useState<any>();
   const [isKeywordBox, setIsKeywordBox] = useState(false);
+  const [refetch, setRefetch] = useState(0);
 
   const debounceKeyword = useDebounce(keyword);
+
+  useEffect(() => {
+    if (localStorage.getItem('searches')) {
+      const result = JSON.parse(localStorage.getItem('searches'));
+      setRecentSearches(result);
+    }
+  }, [refetch]);
 
   useEffect(() => {
     const getKeyword = async () => {
@@ -33,20 +42,36 @@ const SearchBar = () => {
     setKeyword(e.target.value);
   };
 
+  const handleSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const searches = JSON.parse(localStorage.getItem('searches')) ?? [];
+    if (searches.length > 5) {
+      searches.pop();
+    }
+    searches.unshift(keyword);
+    localStorage.setItem('searches', JSON.stringify(searches));
+    setRefetch((prev) => prev + 1);
+    setKeyword('');
+    alert('검색완료');
+  };
+
   return (
     <SearchWrap>
-      <InputContainer>
-        <SearchInput
-          type="text"
-          placeholder="질환명을 입력해주세요."
-          onFocus={handleOnFocus}
-          onBlur={handleOffFocus}
-          onChange={handleChangeInput}
-        />
-      </InputContainer>
-      <SearchBtn>
-        <SearchIcon color="#fff" />
-      </SearchBtn>
+      <Form>
+        <InputContainer>
+          <SearchInput
+            type="text"
+            placeholder="질환명을 입력해주세요."
+            onFocus={handleOnFocus}
+            onBlur={handleOffFocus}
+            onChange={handleChangeInput}
+            value={keyword}
+          />
+        </InputContainer>
+        <SearchBtn type="submit" onClick={handleSearch}>
+          <SearchIcon color="#fff" />
+        </SearchBtn>
+      </Form>
       {isKeywordBox && (
         <KeywordBox>
           <KeywordOn>
@@ -89,8 +114,13 @@ const SearchBar = () => {
               <KeywordTop>
                 <KeywordTitle>최근 검색어</KeywordTitle>
                 <KeywordList>
-                  <SearchKeyword>최근 검색어가 없습니다.</SearchKeyword>
-                  {/* <SearchKeyword>췌장암</SearchKeyword> */}
+                  {recentSearches ? (
+                    recentSearches?.map((recentSearch) => {
+                      return <SearchKeyword>{recentSearch}</SearchKeyword>;
+                    })
+                  ) : (
+                    <SearchKeyword>최근 검색어가 없습니다.</SearchKeyword>
+                  )}
                 </KeywordList>
               </KeywordTop>
               <Line />
@@ -121,12 +151,15 @@ const SearchWrap = styled.div`
   background-color: #fff;
   border-radius: 48px;
   padding: 20px 10px 20px 24px;
-  display: flex;
-  justify-content: space-between;
   position: relative;
   :focus-within {
     border: 2px solid blue;
   }
+`;
+
+const Form = styled.form`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const InputContainer = styled.div`
@@ -149,6 +182,7 @@ const SearchBtn = styled.button`
   height: 48px;
   border-radius: 50%;
   background-color: #007be9;
+  cursor: pointer;
   svg {
     width: 21px;
     height: 21px;
@@ -194,7 +228,7 @@ const SearchKeyword = styled.div`
   font-weight: 400;
   color: #111;
   margin: 0;
-  &:not(:first-child) {
+  &:not(:last-child) {
     margin-bottom: 10px;
   }
 
