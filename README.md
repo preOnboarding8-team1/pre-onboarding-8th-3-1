@@ -11,7 +11,7 @@
 
 ### 📢 배포 링크
 
-> http://searchbar-wanted.s3-website.ap-northeast-2.amazonaws.com/ > <br />
+> http://pre-search.s3-website.ap-northeast-2.amazonaws.com/> <br />
 
 ## 📚 목차
 
