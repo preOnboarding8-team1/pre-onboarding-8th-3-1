@@ -1,14 +1,6 @@
 import styled from 'styled-components';
 
 const Recommend = () => {
-  const handleInputRecommend = (event) => {
-    const targetName = event.target;
-    if (targetName.tagName === 'BUTTON') {
-      const inputDisease = document.querySelector<HTMLInputElement>('.inputDisease');
-      inputDisease.value = targetName.innerText;
-    }
-  };
-
   return (
     <>
       <RecommendContainer>
@@ -17,7 +9,7 @@ const Recommend = () => {
         </SearchResult>
       </RecommendContainer>
       <RecommendTitle>추천 검색어로 검색해 보세요.</RecommendTitle>
-      <ButtonContainer onClick={handleInputRecommend}>
+      <ButtonContainer>
         <RecommendButton>B형간염</RecommendButton>
         <RecommendButton>비만</RecommendButton>
         <RecommendButton>관절염</RecommendButton>

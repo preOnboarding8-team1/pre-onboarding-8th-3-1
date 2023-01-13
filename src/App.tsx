@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import axios from 'axios';
-import Search from './Search';
+import Search from './components/Search';
 
 const App = () => {
   const [focus, setFocus] = useState<boolean>(false);
