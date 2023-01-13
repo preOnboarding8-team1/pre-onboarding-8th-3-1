@@ -4,6 +4,7 @@
 [![Package Manager Version](https://img.shields.io/badge/npm-v8.12.1-yellow)](https://www.npmjs.com/)
 
 검색창 구현 및 검색어 추천 기능을 구현하였습니다.
+질환명 검색시 API 호출 통해서 검색어를 추천하고, 최적화 및 키보드 이동 기능을 구현했습니다.
 
 ### 🗓 수행 기간
 
@@ -19,7 +20,6 @@
 - [Best Practice](#best-practice)
 - [실행 방법](#실행-방법)
 - [디렉토리 구조](#디렉토리-구조)
-- [추가 구현 기능](#추가-구현-기능)
 
 <br />
 
@@ -87,28 +87,6 @@
             <a href="https://github.com/preOnboarding8-team1/pre-onboarding-8th-2-1/commits?author=zkzk8953" title="Code">💻</a>
         </td>
         <td align="center">
-            <a href="https://github.com/rewrite0w0">
-                <img src="https://avatars.githubusercontent.com/u/55968557?v=4" width="100px;" alt="오태준"/>
-                <br />
-                <sub>
-                    <b>오태준</b>
-                </sub>
-            </a>
-            <br />
-            <a href="https://github.com/preOnboarding8-team1/pre-onboarding-8th-2-1/commits?author=rewrite0w0" title="Code">💻</a>
-        </td>
-        <td align="center">
-            <a href="https://github.com/bigwave-cho">
-                <img src="https://avatars.githubusercontent.com/u/105909665?v=4" width="100px;" alt="조재현"/>
-                <br />
-                <sub>
-                    <b>조재현</b>
-                </sub>
-            </a>
-            <br />
-            <a href="https://github.com/preOnboarding8-team1/pre-onboarding-8th-2-1/commits?author=bigwave-cho" title="Code">💻</a>
-        </td> 
-        <td align="center">
             <a href="https://github.com/JeongTaekCho">
                 <img src="https://avatars.githubusercontent.com/u/92679073?v=4" width="100px;" alt="조정택"/>
                 <br />
@@ -145,23 +123,23 @@
 
 ### Assignment1
 
-- [x] 입력마다 API 호출하지 않도록 API 호출 횟수를 줄이는 전략 수립 및 실행
+- [x] 입력마다 API 호출하지 않도록 API 호출 횟수를 줄이는 최적화 전략 수립 및 실행
 
-     <br />
+    <br />
 
   ```jsx
   // hooks/useDebounce.ts
   export const useDebounce = () => {
     const [timer, setTimer] = useState(0);
 
-    const debouncer = (refetch, delay) => {
+    const debouncer = (callback: Callback, delay: number) => {
       if (timer) {
         window.clearTimeout(timer);
       }
 
       const newTimer = window.setTimeout(() => {
         try {
-          refetch();
+          callback();
         } catch (e) {
           console.error('error', e);
         }
@@ -180,13 +158,19 @@
 
 ### Assignment2
 
-- [x] 캐싱
+- [x] API 호출별로 로컬 캐싱 구현
 
    <br />
 
   ```jsx
   // hooks/useGetResults
+  export const useGetResults: UseGetResultsType = (searchQuery, setResults) => {
+  const debouncer = useDebounce();
+  let data: Result[] = JSON.parse(localStorage.getItem(searchQuery));
+  const [isLoading, setIsLoading] = useState(false);
+
   const getResults = () => {
+    setIsLoading(true);
     debouncer(async () => {
       if (!data) {
         data = await searchAPI.getResult(`/sick?q=${searchQuery}
@@ -195,8 +179,11 @@
       }
 
       setResults(data.slice(0, 10));
+      setIsLoading(false);
     }, 500);
   };
+
+  return { getResults, isLoading };
 
   // components/ SearchBar.tsx
   const { getResults } = useGetResults(searchQuery, setResults);
@@ -240,7 +227,8 @@
   ```
 
   > 📌 Input과 DropDown 을 포함하는 상위 컴포넌트에 키보드 방향에 따라 추천 검색어 배열의 인덱스를 탐색하는 onKeyUp 이벤트 핸들러를 전달합니다.  
-  > 📌 추천 검색어의 각 검색 결과인 하위 컴포넌트는 현재 인덱스와 키보드 이벤트에 따라 변경된 selected 의 인덱스가 같을 경우 조건부로 클래스를 부여하여 스타일링합니다.
+  > 📌 추천 검색어의 각 검색 결과인 하위 컴포넌트는 현재 인덱스와 키보드 이벤트에 따라 변경된 selected 의 인덱스가 같을 경우 조건부로 클래스를 부여하여 스타일링합니다.  
+  > 📌 Input창에 검색어를 입력한 뒤 down 키를 눌러 추천 검색어를 탐색할 수 있습니다. down, up 키로 원하는 검색어로 이동할 수 있습니다.
 
 <br />
 
