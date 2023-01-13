@@ -9,9 +9,10 @@ type DropDownProps = {
   results: Result[];
   selected: number;
   handleDropDownClick: (clickedOption: string) => void;
+  recentKeywords: string[];
 };
 
-const DropDown = ({ searchQuery, results, selected, handleDropDownClick }: DropDownProps) => {
+const DropDown = ({ searchQuery, results, selected, handleDropDownClick, recentKeywords }: DropDownProps) => {
   return (
     <Wrapper>
       {searchQuery ? (
@@ -23,7 +24,7 @@ const DropDown = ({ searchQuery, results, selected, handleDropDownClick }: DropD
             <SearchValueText>{searchQuery}</SearchValueText>
           </SearchItemWrapper>
 
-          {results.length > 0 && (
+          {results?.length > 0 && (
             <>
               <SectionTitle>추천 검색어</SectionTitle>
 

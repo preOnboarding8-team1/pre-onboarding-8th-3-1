@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Result } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';

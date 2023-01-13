@@ -4,16 +4,32 @@ import { useGetResults } from '../hooks/useGetResults';
 import { Result, ReactSetState } from '../types/types';
 import MagnifierIcon from './MagnifierIcon';
 
-export type SearchBarProps = {
+type SearchBarProps = {
   searchQuery: string;
   setIsDropDownOpen: ReactSetState<boolean>;
   setSearchQuery: ReactSetState<string>;
   setResults: ReactSetState<Result[]>;
+  setRecentKeywords: ReactSetState<string[]>;
 };
 
-const SearchBar = ({ setIsDropDownOpen, searchQuery, setSearchQuery, setResults }: SearchBarProps) => {
+const SearchBar = ({
+  setIsDropDownOpen,
+  searchQuery,
+  setSearchQuery,
+  setResults,
+  setRecentKeywords,
+}: SearchBarProps) => {
   const handleChangeQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleOnsubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setRecentKeywords((prev) => {
+      const newKeywokds = prev.slice();
+      prev.push(searchQuery);
+      return newKeywokds;
+    });
   };
 
   const { getResults } = useGetResults(searchQuery, setResults);
@@ -21,11 +37,11 @@ const SearchBar = ({ setIsDropDownOpen, searchQuery, setSearchQuery, setResults 
   useEffect(getResults, [searchQuery]);
 
   return (
-    <Wrapper>
+    <Wrapper onSubmit={handleOnsubmit}>
       <Input
         placeholder="질환명을 입력해 주세요."
         onFocus={() => setIsDropDownOpen(true)}
-        // onBlur={() => setTimeout(() => setIsDropDownOpen(false), 300)}
+        onBlur={() => setTimeout(() => setIsDropDownOpen(false), 300)}
         value={searchQuery}
         onChange={handleChangeQuery}
       />
@@ -95,6 +111,7 @@ const BtnSearch = styled.button`
   border-radius: 50%;
   position: absolute;
   right: 15px;
+  cursor: pointer;
 `;
 
 const BtnSearchIcon = styled.div`

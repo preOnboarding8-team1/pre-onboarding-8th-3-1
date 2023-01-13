@@ -9,8 +9,8 @@ const Main = () => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<Result[]>();
-
   const [selected, setSelected] = useState(-1);
+  const [recentKeywords, setRecentKeywords] = useState(['']);
 
   const handleDropDownClick = (clickedOption) => {
     setSearchQuery(clickedOption);
@@ -24,7 +24,7 @@ const Main = () => {
       setSelected(selected - 1);
     }
     if (e.key === 'Enter' && selected >= 0) {
-      handleDropDownClick(results[selected]);
+      handleDropDownClick(results[selected].sickNm);
       setSelected(-1);
     }
   };
@@ -42,6 +42,7 @@ const Main = () => {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           setResults={setResults}
+          setRecentKeywords={setRecentKeywords}
         />
         {isDropDownOpen && (
           <DropDown
@@ -49,6 +50,7 @@ const Main = () => {
             results={results}
             selected={selected}
             handleDropDownClick={handleDropDownClick}
+            recentKeywords={recentKeywords}
           />
         )}
       </Wrapper>
