@@ -1,6 +1,11 @@
-const App = () => {
-  const num = 1;
-  return <div>boilerplate</div>;
-};
+import Home from './pages/Home';
+
+function App() {
+  return (
+    <>
+      <Home />
+    </>
+  );
+}
 
 export default App;
