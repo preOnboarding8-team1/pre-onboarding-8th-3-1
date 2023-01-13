@@ -1,6 +1,12 @@
+import React from "react";
+import Main from "./pages/main/Main";
+
 const App = () => {
-  const num = 1;
-  return <div>boilerplate</div>;
+  return (
+    <>
+      <Main />
+    </>
+  );
 };
 
 export default App;
