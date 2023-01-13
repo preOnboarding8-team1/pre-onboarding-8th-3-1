@@ -1,6 +1,7 @@
+import Main from './pages/Main';
+
 const App = () => {
-  const num = 1;
-  return <div>boilerplate</div>;
+  return <Main />;
 };
 
 export default App;
