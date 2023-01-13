@@ -30,6 +30,7 @@ const SearchBar = ({
       prev.push(searchQuery);
       return newKeywokds;
     });
+    setSearchQuery('');
   };
 
   const { getResults } = useGetResults(searchQuery, setResults);

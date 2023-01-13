@@ -46,7 +46,12 @@ const DropDown = ({ searchQuery, results, selected, handleDropDownClick, recentK
       ) : (
         <>
           <SectionTitle>최근 검색어</SectionTitle>
-          <NoRecentSearch>최근 검색어가 없습니다</NoRecentSearch>
+          {recentKeywords ? (
+            recentKeywords.map((keyword) => <SearchValueText key={keyword}>{keyword}</SearchValueText>)
+          ) : (
+            <NoRecentSearch>최근 검색어가 없습니다</NoRecentSearch>
+          )}
+
           <Dividor />
 
           <SectionTitle>추천 검색어로 검색해보세요</SectionTitle>
