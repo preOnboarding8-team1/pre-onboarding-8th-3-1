@@ -16,10 +16,6 @@ const SearchBox = () => {
   const [keyword, setKeyword] = useState<SearchParams>({ q: "" });
   const [relatedKeywords, setRelatedKeywords] = useState<SearchRelatedKeywords[]>([]);
 
-  /**
-   *
-   * @param event
-   */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setKeyword({ ...keyword, q: event.target.value });
 
