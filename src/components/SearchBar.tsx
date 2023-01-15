@@ -11,8 +11,21 @@ const SearchBar = () => {
   const [recentSearches, setRecentSearches] = useState<any>();
   const [isKeywordBox, setIsKeywordBox] = useState(false);
   const [refetch, setRefetch] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const debounceKeyword = useDebounce(keyword);
+
+  useEffect(() => {
+    const getKeyword = async () => {
+      setIsLoading(true);
+      const result = await getSearch(debounceKeyword);
+      setKeywords(result);
+      setIsLoading(false);
+    };
+    if (debounceKeyword) {
+      getKeyword();
+    }
+  }, [debounceKeyword]);
 
   useEffect(() => {
     if (localStorage.getItem('searches')) {
@@ -20,16 +33,6 @@ const SearchBar = () => {
       setRecentSearches(result);
     }
   }, [refetch]);
-
-  useEffect(() => {
-    const getKeyword = async () => {
-      const result = await getSearch(debounceKeyword);
-      setKeywords(result);
-    };
-    if (debounceKeyword) {
-      getKeyword();
-    }
-  }, [debounceKeyword]);
 
   const handleOnFocus = () => {
     setIsKeywordBox(true);
@@ -87,23 +90,29 @@ const SearchBar = () => {
                 {keyword.length !== 0 && keywords?.data && (
                   <>
                     <KeywordTitle>추천 검색어</KeywordTitle>
-                    {keywords?.data.map((keywordDatas) => {
-                      return (
-                        <SearchKeyword key={uuid()}>
-                          <SearchIcon color="currentColor" />
-                          <span>
-                            {keywordDatas.sickNm
-                              .replaceAll(keyword, `3as3${keyword}3as3`)
-                              .split('3as3')
-                              .map((keywordEl) => {
-                                return (
-                                  <span style={{ fontWeight: keywordEl === keyword ? '700' : '400' }}>{keywordEl}</span>
-                                );
-                              })}
-                          </span>
-                        </SearchKeyword>
-                      );
-                    })}
+                    {isLoading ? (
+                      <div>검색중...</div>
+                    ) : (
+                      keywords?.data.map((keywordDatas) => {
+                        return (
+                          <SearchKeyword key={uuid()}>
+                            <SearchIcon color="currentColor" />
+                            <span>
+                              {keywordDatas.sickNm
+                                .replaceAll(keyword, `3as3${keyword}3as3`)
+                                .split('3as3')
+                                .map((keywordEl) => {
+                                  return (
+                                    <span style={{ fontWeight: keywordEl === keyword ? '700' : '400' }}>
+                                      {keywordEl}
+                                    </span>
+                                  );
+                                })}
+                            </span>
+                          </SearchKeyword>
+                        );
+                      })
+                    )}
                   </>
                 )}
               </KeywordList>
